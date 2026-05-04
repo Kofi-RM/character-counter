@@ -7,12 +7,14 @@ export interface TextInputProps {
 export interface TextStats {
   characterCount: number;
   wordCount: number;
-  readingTime: number; // in minutes
+   readingTimeMin: number;
+      readingTimeSec: number;
 }
  
 export interface StatsDisplayProps {
   stats: TextStats;
   showReadingTime?: boolean;
+  validWordCount?: boolean;
 }
 
 export interface CharacterCounterProps {

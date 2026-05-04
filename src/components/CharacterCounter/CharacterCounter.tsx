@@ -12,29 +12,39 @@ export const CharacterCounter: React.FC<CharacterCounterProps> = ({
 }) => {
   const [text, setText] = useState('');
 
+
   const calculateStats = (input: string): TextStats => {
     const words = input.trim().split(/\s+/).filter(Boolean);
 
     const wordCount = words.length;
     const characterCount = input.length;
-
-    // avg reading speed ~200 words/min
-    const readingTime = Math.ceil(wordCount / 200);
-
+    
+    let readingTimeSec = Math.floor(wordCount / 3);
+    let readingTimeMin = 0;
+    if (readingTimeSec > 59) { 
+      readingTimeMin = Math.floor(readingTimeSec / 60);
+      readingTimeSec = readingTimeSec - (readingTimeMin * 60)
+    }
     return {
       characterCount,
       wordCount,
-      readingTime
+      readingTimeMin,
+      readingTimeSec
     };
   };
 
   const stats = calculateStats(text);
+  let validWordCount;
+if (stats.wordCount > maxWords || stats.wordCount < minWords) {validWordCount = false;
 
+} else {
+  validWordCount = true;
+}
   return (
     <div className="max-w-xl mx-auto p-4">
       <TextInput onTextChange={setText} />
 
-      <StatsDisplay stats={stats} />
+      <StatsDisplay stats={stats} validWordCount = {validWordCount} />
 
       {/* Progress / Feedback */}
       <div className="mt-4">
@@ -56,6 +66,8 @@ export const CharacterCounter: React.FC<CharacterCounterProps> = ({
           </p>
         )}
       </div>
+   
     </div>
+    
   );
 };
